@@ -13,12 +13,12 @@ const LaunchScreen = ({
 }) => {
   return (
     <SafeAreaView style={styles.screenContainer}>
-      <View>
-        <Text style={{fontFamily: fonts.montserratRegular}}>
-          {welcomeToApp}
-        </Text>
-        <Text>{exploreUs}</Text>
+      <View style={styles.welcomeContainer}>
+        <Text style={styles.welcomeText}>{welcomeToApp}</Text>
+        <Text style={styles.welcomeSubText}>{exploreUs}</Text>
       </View>
+      <View style={{flex: 2}}></View>
+      <View style={{flex: 1}}></View>
     </SafeAreaView>
   );
 };
@@ -34,5 +34,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     alignItems: 'center',
+  },
+  welcomeContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  welcomeText: {
+    fontFamily: fonts.montserratSemiBold,
+    marginBottom: 16,
+    fontSize: 20,
+    color: colors.doveGray,
+  },
+  welcomeSubText: {
+    fontSize: 18,
+    fontFamily: fonts.montserratMedium,
+    color: colors.doveGray,
   },
 });
