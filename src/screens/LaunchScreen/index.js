@@ -4,13 +4,14 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {connect} from 'react-redux';
 
 import {launchScreenImage} from '../../assets/images';
+import CustomButton from '../../components/CustomButton';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import screenNames from '../../constants/screenNames';
 
 const LaunchScreen = ({
   languageModel: {
-    [screenNames.launchScreen]: {welcomeToApp, exploreUs},
+    [screenNames.launchScreen]: {welcomeToApp, exploreUs, logIn, signUp},
   },
 }) => {
   return (
@@ -22,7 +23,14 @@ const LaunchScreen = ({
       <View style={styles.imageContainer}>
         <Image source={launchScreenImage} />
       </View>
-      <View style={{flex: 1}}></View>
+      <View style={styles.buttonContainer}>
+        <CustomButton title={logIn} />
+        <CustomButton
+          title={signUp}
+          style={styles.signUpButton}
+          gradientEnabled={false}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -55,5 +63,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.montserratMedium,
     color: colors.doveGray,
   },
-  imageContainer: {flex: 2, justifyContent: 'center', alignItems: 'center'},
+  imageContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  buttonContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  signUpButton: {marginTop: 8},
 });
