@@ -1,14 +1,30 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {connect} from 'react-redux';
+import colors from '../../constants/colors';
+import fonts from '../../constants/fonts';
 
-const LogInScreen = () => {
+const LogInScreen = ({languageModel: {logIn}}) => {
   return (
-    <View>
-      <Text>LogInScreen</Text>
-    </View>
+    <SafeAreaView edges={['bottom']} style={styles.screenContainer}>
+      <Text style={styles.headingText}>{logIn}</Text>
+    </SafeAreaView>
   );
 };
 
-export default LogInScreen;
+const mapStateToProps = ({languageModel}) => ({languageModel});
 
-const styles = StyleSheet.create({});
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogInScreen);
+
+const styles = StyleSheet.create({
+  screenContainer: {backgroundColor: colors.white, flex: 1},
+  headingText: {
+    marginLeft: 10,
+    marginTop: 4,
+    fontSize: 30,
+    fontFamily: fonts.montserratMedium,
+  },
+});

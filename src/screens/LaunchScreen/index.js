@@ -10,9 +10,7 @@ import fonts from '../../constants/fonts';
 import screenNames from '../../constants/screenNames';
 
 const LaunchScreen = ({
-  languageModel: {
-    [screenNames.launchScreen]: {welcomeToApp, exploreUs, logIn, signUp},
-  },
+  languageModel: {welcomeToApp, exploreUs, logIn, signUp},
   navigation: {navigate},
 }) => {
   return (

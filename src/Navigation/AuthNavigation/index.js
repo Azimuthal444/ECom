@@ -1,18 +1,18 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import screenNames from '../../constants/screenNames';
 import LaunchScreen from '../../screens/LaunchScreen';
 import SignUpScreen from '../../screens/SignUpScreen';
 import LogInScreen from '../../screens/LogInScreen';
-import CustomHeader from '../../components/CustomHeader';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createStackNavigator();
 
 const AuthNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerStyle: styles.headerStyle}}>
       <Stack.Screen
         name={screenNames.launchScreen}
         component={LaunchScreen}
@@ -56,4 +56,5 @@ export default AuthNavigation;
 
 const styles = StyleSheet.create({
   iconStyle: {padding: 10},
+  headerStyle: {shadowColor: 'transparent'},
 });
