@@ -13,6 +13,7 @@ const LaunchScreen = ({
   languageModel: {
     [screenNames.launchScreen]: {welcomeToApp, exploreUs, logIn, signUp},
   },
+  navigation: {navigate},
 }) => {
   return (
     <SafeAreaView style={styles.screenContainer}>
@@ -24,11 +25,15 @@ const LaunchScreen = ({
         <Image source={launchScreenImage} />
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton title={logIn} />
+        <CustomButton
+          title={logIn}
+          onPress={() => navigate(screenNames.logInScreen)}
+        />
         <CustomButton
           title={signUp}
           style={styles.signUpButton}
           gradientEnabled={false}
+          onPress={() => navigate(screenNames.signUpScreen)}
         />
       </View>
     </SafeAreaView>

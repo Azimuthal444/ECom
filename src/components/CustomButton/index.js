@@ -12,11 +12,11 @@ const CustomButton = ({
 }) => {
   const ButtonComponent = useCallback(
     ({buttonStyle, textStyle}) => (
-      <Pressable style={[styles.defaultStyle, buttonStyle]}>
+      <Pressable style={[styles.defaultStyle, buttonStyle]} onPress={onPress}>
         <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       </Pressable>
     ),
-    [title],
+    [onPress, title],
   );
 
   if (gradientEnabled) {
