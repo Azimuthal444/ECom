@@ -24,15 +24,13 @@ const CustomInput = ({placeholder, value, onChange, onBlur}) => {
       <TextInput
         placeholder={isFocused ? '' : placeholder}
         value={value}
-        onChange={onChange}
+        onChangeText={val => onChange(val)}
         style={styles.inputStyle}
         onFocus={() => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
           setIsFocused(true);
         }}
         onBlur={() => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-          console.log(value);
           value === '' && setIsFocused(false);
           onBlur();
         }}
