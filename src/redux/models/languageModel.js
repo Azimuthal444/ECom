@@ -8,6 +8,8 @@ const languageModel = {
     password: 'Password',
     emailRequired: 'Email is required',
     invalidEmail: 'Invalid Email',
+    passwordRequired: 'Password is required',
+    alreadyHaveAnAccount: 'Already have an account?',
   },
 };
 

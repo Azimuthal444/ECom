@@ -1,15 +1,17 @@
 import React, {useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Input} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {connect} from 'react-redux';
-import CustomButton from '../../components/CustomButton';
 
+import CustomButton from '../../components/CustomButton';
+import ErrorText from '../../components/ErrorText';
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
 import {emailRegex} from '../../constants/regex';
+import screenNames from '../../constants/screenNames';
 
 const LogInScreen = ({
   languageModel: {
@@ -18,7 +20,11 @@ const LogInScreen = ({
     password: passwordLabel,
     emailRequired,
     invalidEmail,
+    passwordRequired,
+    alreadyHaveAnAccount,
+    signUp,
   },
+  navigation: {navigate},
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -26,8 +32,6 @@ const LogInScreen = ({
     formState: {errors},
     handleSubmit,
   } = useForm();
-
-  console.log(errors);
 
   const onLogin = useCallback(data => {
     console.log(data);
@@ -41,12 +45,13 @@ const LogInScreen = ({
           control={control}
           render={({field: {onBlur, onChange, value}}) => (
             <Input
-              {...{onBlur, onChange, value}}
+              {...{onBlur, value}}
               placeholder={emailLabel}
               keyboardType="email-address"
               autoCapitalize="none"
-              label={emailLabel}
               errorMessage={errors?.email?.message}
+              onChangeText={val => onChange(val)}
+              errorStyle={styles.errorTextStyle}
             />
           )}
           name="email"
@@ -60,10 +65,9 @@ const LogInScreen = ({
           control={control}
           render={({field: {onBlur, onChange, value}}) => (
             <Input
-              {...{onBlur, onChange, value}}
+              {...{onBlur, value}}
               placeholder={passwordLabel}
               secureTextEntry={!showPassword}
-              label={passwordLabel}
               rightIcon={
                 <Icon
                   name={showPassword ? 'visibility-off' : 'visibility'}
@@ -71,17 +75,29 @@ const LogInScreen = ({
                   onPress={() => setShowPassword(prevState => !prevState)}
                 />
               }
+              onChangeText={val => onChange(val)}
+              errorMessage={errors?.password?.message}
+              errorStyle={styles.errorTextStyle}
             />
           )}
           name="password"
           defaultValue=""
-          rules={{required: true}}
+          rules={{required: {value: true, message: passwordRequired}}}
         />
         <CustomButton
           style={styles.buttonStyle}
           title={logIn}
           onPress={handleSubmit(onLogin)}
         />
+        <ErrorText text={undefined} />
+        <View style={styles.bottomTextContainer}>
+          <Text style={styles.signUpTextStyle}>{alreadyHaveAnAccount}</Text>
+          <Pressable
+            style={styles.signUpButton}
+            onPress={() => navigate(screenNames.signUpScreen)}>
+            <Text style={{fontFamily: fonts.montserratSemiBold}}>{signUp}</Text>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -106,5 +122,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: 'center',
   },
-  buttonStyle: {width: '90%', marginTop: 20},
+  buttonStyle: {width: '90%', marginVertical: 20},
+  errorTextStyle: {marginLeft: 0, color: colors.torchRed},
+  bottomTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  signUpTextStyle: {
+    fontFamily: fonts.montserratMedium,
+    color: colors.doveGray,
+  },
+  signUpButton: {padding: 10},
 });
