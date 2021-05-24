@@ -6,6 +6,8 @@ const languageModel = {
     signUp: 'Sign Up',
     email: 'Email',
     password: 'Password',
+    emailRequired: 'Email is required',
+    invalidEmail: 'Invalid Email',
   },
 };
 

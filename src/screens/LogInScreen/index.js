@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {StyleSheet, Text, View} from 'react-native';
 import {Input} from 'react-native-elements';
@@ -9,12 +9,29 @@ import CustomButton from '../../components/CustomButton';
 
 import colors from '../../constants/colors';
 import fonts from '../../constants/fonts';
+import {emailRegex} from '../../constants/regex';
 
 const LogInScreen = ({
-  languageModel: {logIn, email: emailLabel, password: passwordLabel},
+  languageModel: {
+    logIn,
+    email: emailLabel,
+    password: passwordLabel,
+    emailRequired,
+    invalidEmail,
+  },
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const {control} = useForm();
+  const {
+    control,
+    formState: {errors},
+    handleSubmit,
+  } = useForm();
+
+  console.log(errors);
+
+  const onLogin = useCallback(data => {
+    console.log(data);
+  }, []);
 
   return (
     <SafeAreaView edges={['bottom']} style={styles.screenContainer}>
@@ -24,19 +41,26 @@ const LogInScreen = ({
           control={control}
           render={({field: {onBlur, onChange, value}}) => (
             <Input
+              {...{onBlur, onChange, value}}
               placeholder={emailLabel}
               keyboardType="email-address"
               autoCapitalize="none"
               label={emailLabel}
+              errorMessage={errors?.email?.message}
             />
           )}
           name="email"
           defaultValue=""
+          rules={{
+            required: {value: true, message: emailRequired},
+            pattern: {value: emailRegex, message: invalidEmail},
+          }}
         />
         <Controller
           control={control}
           render={({field: {onBlur, onChange, value}}) => (
             <Input
+              {...{onBlur, onChange, value}}
               placeholder={passwordLabel}
               secureTextEntry={!showPassword}
               label={passwordLabel}
@@ -51,8 +75,13 @@ const LogInScreen = ({
           )}
           name="password"
           defaultValue=""
+          rules={{required: true}}
         />
-        <CustomButton style={styles.buttonStyle} title={logIn} />
+        <CustomButton
+          style={styles.buttonStyle}
+          title={logIn}
+          onPress={handleSubmit(onLogin)}
+        />
       </View>
     </SafeAreaView>
   );
