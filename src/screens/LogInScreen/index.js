@@ -2,6 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Input} from 'react-native-elements';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {connect} from 'react-redux';
@@ -23,8 +24,14 @@ const LogInScreen = ({
     passwordRequired,
     alreadyHaveAnAccount,
     signUp,
+    nameRequired,
+    nameLengthRequirement,
+    name,
   },
   navigation: {navigate},
+  route: {
+    params: {type},
+  },
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -33,14 +40,44 @@ const LogInScreen = ({
     handleSubmit,
   } = useForm();
 
-  const onLogin = useCallback(data => {
-    console.log(data);
-  }, []);
+  const onSubmit = useCallback(
+    data => {
+      if (type === screenNames.signUpScreen) {
+        console.log('Signup');
+      } else {
+        console.log('Bye');
+      }
+    },
+    [type],
+  );
 
   return (
     <SafeAreaView edges={['bottom']} style={styles.screenContainer}>
-      <Text style={styles.headingText}>{logIn}</Text>
-      <View style={styles.loginFormContainer}>
+      <Text style={styles.headingText}>
+        {type === screenNames.signUpScreen ? signUp : logIn}
+      </Text>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.loginFormContainer}>
+        {type === screenNames.signUpScreen && (
+          <Controller
+            control={control}
+            render={({field: {onBlur, onChange, value}}) => (
+              <Input
+                {...{onBlur, value}}
+                placeholder={name}
+                errorMessage={errors?.name?.message}
+                onChangeText={val => onChange(val)}
+                errorStyle={styles.errorTextStyle}
+              />
+            )}
+            name="name"
+            defaultValue=""
+            rules={{
+              required: {value: true, message: nameRequired},
+              minLength: {value: 2, message: nameLengthRequirement},
+            }}
+          />
+        )}
         <Controller
           control={control}
           render={({field: {onBlur, onChange, value}}) => (
@@ -86,19 +123,28 @@ const LogInScreen = ({
         />
         <CustomButton
           style={styles.buttonStyle}
-          title={logIn}
-          onPress={handleSubmit(onLogin)}
+          title={type === screenNames.signUpScreen ? signUp : logIn}
+          onPress={handleSubmit(onSubmit)}
         />
         <ErrorText text={undefined} />
         <View style={styles.bottomTextContainer}>
           <Text style={styles.signUpTextStyle}>{alreadyHaveAnAccount}</Text>
           <Pressable
             style={styles.signUpButton}
-            onPress={() => navigate(screenNames.signUpScreen)}>
-            <Text style={{fontFamily: fonts.montserratSemiBold}}>{signUp}</Text>
+            onPress={() =>
+              navigate(screenNames.logInScreen, {
+                type:
+                  type === screenNames.signUpScreen
+                    ? screenNames.logInScreen
+                    : screenNames.signUpScreen,
+              })
+            }>
+            <Text style={{fontFamily: fonts.montserratSemiBold}}>
+              {type === screenNames.signUpScreen ? logIn : signUp}
+            </Text>
           </Pressable>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

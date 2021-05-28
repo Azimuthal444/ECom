@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import screenNames from '../../constants/screenNames';
 import LaunchScreen from '../../screens/LaunchScreen';
-import SignUpScreen from '../../screens/SignUpScreen';
 import LogInScreen from '../../screens/LogInScreen';
 
 const Stack = createStackNavigator();
@@ -35,7 +34,7 @@ const AuthNavigation = () => {
       />
       <Stack.Screen
         name={screenNames.signUpScreen}
-        component={SignUpScreen}
+        component={LogInScreen}
         options={({navigation: {goBack}}) => ({
           headerTitle: false,
           headerLeft: ({}) => (

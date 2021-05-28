@@ -25,13 +25,17 @@ const LaunchScreen = ({
       <View style={styles.buttonContainer}>
         <CustomButton
           title={logIn}
-          onPress={() => navigate(screenNames.logInScreen)}
+          onPress={() =>
+            navigate(screenNames.logInScreen, {type: screenNames.logInScreen})
+          }
         />
         <CustomButton
           title={signUp}
           style={styles.signUpButton}
           gradientEnabled={false}
-          onPress={() => navigate(screenNames.signUpScreen)}
+          onPress={() =>
+            navigate(screenNames.logInScreen, {type: screenNames.signUpScreen})
+          }
         />
       </View>
     </SafeAreaView>
